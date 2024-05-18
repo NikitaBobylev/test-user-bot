@@ -1,0 +1,10 @@
+*.pyc
+.env
+.idea/
+core/project/settings/local.py
+static/*
+!static/.gitkeep
+my_account.session
+core/apps/users/test.py
+test.py
+my_account.session-journal
