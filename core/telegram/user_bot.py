@@ -97,7 +97,7 @@ async def main():
             users = await user_service.get_users_to_send_message()
             logger.info(f'{users=}')
             for user in users:
-                if (now.day, now.hour, now.minute) != \
+                if (now.day, now.hour, now.minute) <= \
                         (user.to_send_message.day, user.to_send_message.hour, user.to_send_message.minute):
                     continue
                 if user.stage is Stage.first:

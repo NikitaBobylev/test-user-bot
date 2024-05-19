@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  main-app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+
+    container_name: main-app
+    command: "sh /entrypoint.sh"
+    #    command: gunicorn core.project.wsgi --bind 0.0.0.0:8000
+    env_file:
+      - ../.env
+    restart: always
+    depends_on:
+      - postgres
+    volumes:
+      - ..:/app/
