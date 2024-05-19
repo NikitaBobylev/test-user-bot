@@ -6,7 +6,7 @@ database_url = f'postgresql+asyncpg://{db_username}:{db_password}@{db_host}:{db_
 
 async_engine = create_async_engine(
     database_url,
-    echo=True,
+    echo=False,
     future=True,
 )
 

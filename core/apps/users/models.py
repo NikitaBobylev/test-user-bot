@@ -11,7 +11,7 @@ from core.apps.users.entities import User as UserEntity
 class Status(Enum):
     alive: str = 'alive'
     dead: str = 'dead'
-    finish: str = 'finished'
+    finished: str = 'finished'
 
 
 class Stage(Enum):
@@ -45,3 +45,5 @@ class UsersOrm(Base):
             telegram_id=self.telegram_id,
             stage=self.stage
         )
+
+
