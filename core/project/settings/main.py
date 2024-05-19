@@ -17,10 +17,9 @@ db_host = env('db_host')
 db_port = env('db_port')
 db_name = env('db_name')
 
-DELTA_FIRST_STAGE = timedelta(minutes=2)
-DALTA_SECOND_STAGE = timedelta(minutes=4)
-DALTA_LAST_STAGE = timedelta(minutes=10)
-# DALTA_LAST_STAGE = timedelta(days=1, hours=2)
+DELTA_FIRST_STAGE = timedelta(minutes=6)
+DALTA_SECOND_STAGE = timedelta(minutes=39)
+DALTA_LAST_STAGE = timedelta(days=1, hours=2)
 
 TRIGGERS = (
     'прекрасно',
