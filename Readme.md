@@ -1,6 +1,6 @@
 # Telegram test user_bot
 
-This is a test assignment 
+This is a test assignment.
 The bot receives messages from users and sends them messages after certain timings
 ## Requirements
 
