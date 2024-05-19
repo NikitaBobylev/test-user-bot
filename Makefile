@@ -33,22 +33,8 @@ app:
 app-logs:
 	${LOGS} ${APP_CONTAINER} -f
 
-.PHONY: user_bot
-user_bot:
-	${EXEC} ${APP_CONTAINER} python main.py
-
-
-
 .PHONY: app-down
 app-down:
 	${DC} -f ${STORAGES_FILE} -f ${APP_FILE} down
 
-.PHONY: migrations
-migrations:
-	${EXEC} ${APP_CONTAINER} alembic revision --autogenerate
-
-
-.PHONY: migrate
-migrate:
-	${EXEC} ${APP_CONTAINER} alembic upgrade head
 
