@@ -1,3 +1,4 @@
+import datetime
 from dataclasses import dataclass
 
 
@@ -5,3 +6,4 @@ from dataclasses import dataclass
 class User:
     telegram_id: str
     stage: str
+    to_send_message: datetime.datetime

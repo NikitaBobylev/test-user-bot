@@ -1,0 +1,12 @@
+2024-05-19 14:36:04.932 | INFO     | core.telegram.user_bot:main:90 - start user_bot
+2024-05-19 14:36:05.865 | INFO     | core.telegram.user_bot:main:98 - users=[]
+2024-05-19 14:36:08.871 | INFO     | core.telegram.user_bot:main:98 - users=[]
+2024-05-19 14:36:11.881 | INFO     | core.telegram.user_bot:main:98 - users=[]
+2024-05-19 14:36:14.887 | INFO     | core.telegram.user_bot:main:98 - users=[]
+2024-05-19 14:36:17.890 | INFO     | core.telegram.user_bot:main:98 - users=[]
+2024-05-19 14:36:17.943 | INFO     | core.telegram.user_bot:receive_message:29 - receive message from user 7118678168
+2024-05-19 14:36:20.899 | INFO     | core.telegram.user_bot:main:98 - users=[]
+2024-05-19 14:36:23.911 | INFO     | core.telegram.user_bot:main:98 - users=[]
+2024-05-19 14:36:26.916 | INFO     | core.telegram.user_bot:main:98 - users=[]
+2024-05-19 14:36:29.922 | INFO     | core.telegram.user_bot:main:98 - users=[]
+2024-05-19 14:36:32.927 | INFO     | core.telegram.user_bot:main:98 - users=[]

@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import select, update
+from sqlalchemy import select, update, or_
 
 from core.apps.users.entities import User as UserEntity
 from core.project.settings.database import async_session
@@ -43,7 +43,8 @@ class UserOrmService:
             stmt = (
                 select(UsersOrm)
                 .filter(UsersOrm.status == Status.alive)
-                .filter(UsersOrm.to_send_message.between(start, end))
+                .filter(or_(UsersOrm.to_send_message.between(start, end),
+                            UsersOrm.to_send_message < start))
             )
             users = await session.execute(stmt, )
             users = users.scalars().all()

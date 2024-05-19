@@ -4,15 +4,16 @@ import datetime
 from pyrogram import Client, filters
 from pyrogram.errors import BadRequest
 from pyrogram.handlers import MessageHandler
-
+from loguru import logger
 from core.project.settings.main import api_hash, api_id, DALTA_SECOND_STAGE, DALTA_LAST_STAGE, TRIGGERS, \
     USER_CHECK_TICK_RATE, SKIP_TRIGGERS
 from core.apps.users.services import UserOrmService
 from core.apps.users.models import Stage, Status
 from core.telegram.messages import msg_1, msg_2, msg_3
+from core.project.settings.main import BASE_DIR
 
 user_service = UserOrmService()
-
+logger.add(BASE_DIR / "core/project/logging/{time}.log", rotation="500 MB")
 
 async def _send_message_to_user(app, telegram_id: str, message: str):
     try:
@@ -25,16 +26,15 @@ async def _send_message_to_user(app, telegram_id: str, message: str):
 
 
 async def receive_message(client, message):
-    print(f'message from {message.from_user.id}')
-
+    logger.info(f'receive message from user {message.from_user.id}')
     await user_service.create_user(str(message.from_user.id))
 
     if any(trigger.lower() in message.text.lower() for trigger in TRIGGERS):
-        print(f'trigger in message, finish user {message.from_user.id}')
         await user_service.change_user_status(
             telegram_id=str(message.from_user.id),
             new_user_status=Status.finished
         )
+        logger.info(f'trigger in message, finish user {message.from_user.id}')
 
     if any(skip_trigger.lower() in message.text.lower() for skip_trigger in SKIP_TRIGGERS) \
             and await user_service.check_user_stage(
@@ -46,7 +46,7 @@ async def receive_message(client, message):
             stage=Stage.last,
             delta_stage=DALTA_LAST_STAGE
         )
-        print(f'trigger in message, skip stage user {message.from_user.id}')
+        logger.info(f'trigger in message, skip stage user {message.from_user.id}')
 
 
 async def _change_user_stage(
@@ -85,16 +85,21 @@ async def _change_user_to_finish(
     )
 
 
+@logger.catch
 async def main():
+    logger.info('start user_bot')
     async with Client("my_account", api_id, api_hash) as app:
         message_handler = MessageHandler(receive_message, filters=filters.text & filters.private)
         app.add_handler(message_handler)
 
         while True:
-
+            now = datetime.datetime.utcnow()
             users = await user_service.get_users_to_send_message()
-            print(users)
+            logger.info(f'{users=}')
             for user in users:
+                if (now.day, now.hour, now.minute) != \
+                        (user.to_send_message.day, user.to_send_message.hour, user.to_send_message.minute):
+                    continue
                 if user.stage is Stage.first:
                     await _change_user_stage(
                         app=app,
@@ -103,7 +108,8 @@ async def main():
                         stage=Stage.second,
                         delta_stage=DALTA_SECOND_STAGE
                     )
-                    print(f'SEND message {msg_1} to {user.telegram_id}')
+                    logger.info(f'SEND message {msg_1} to {user.telegram_id}')
+
 
                 elif user.stage is Stage.second:
                     await _change_user_stage(
@@ -113,7 +119,7 @@ async def main():
                         stage=Stage.last,
                         delta_stage=DALTA_LAST_STAGE
                     )
-                    print(f'SEND message {msg_2} to {user.telegram_id}')
+                    logger.info(f'SEND message {msg_2} to {user.telegram_id}')
 
                 elif user.stage is Stage.last:
                     await _change_user_to_finish(
@@ -121,7 +127,6 @@ async def main():
                         telegram_id=user.telegram_id,
                         message=msg_3
                     )
-                    
-                    print(f'SEND message {msg_3} to {user.telegram_id} and finish user')
+                    logger.info(f'SEND message {msg_3} to {user.telegram_id} and finish user')
 
             await asyncio.sleep(USER_CHECK_TICK_RATE)

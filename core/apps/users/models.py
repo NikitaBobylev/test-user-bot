@@ -21,7 +21,7 @@ class Stage(Enum):
 
 
 class UsersOrm(Base):
-    __tablename__ = "users"
+    __tablename__ = "telegram_users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     telegram_id: Mapped[str] = mapped_column(unique=True)
@@ -43,7 +43,8 @@ class UsersOrm(Base):
     def to_entity(self) -> UserEntity:
         return UserEntity(
             telegram_id=self.telegram_id,
-            stage=self.stage
+            stage=self.stage,
+            to_send_message=self.to_send_message
         )
 
 
