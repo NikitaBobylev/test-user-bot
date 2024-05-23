@@ -37,6 +37,7 @@ class UserOrmService:
             await session.commit()
 
     async def get_users_to_send_message(self) -> list[UserEntity]:
+
         async with async_session() as session:
             start, end = datetime.datetime.utcnow() - datetime.timedelta(
                 seconds=7), datetime.datetime.utcnow() + datetime.timedelta(seconds=7)
